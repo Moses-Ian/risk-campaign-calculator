@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"    
+		android:layout_width="fill_parent"    
+		android:layout_height="fill_parent"    
+		android:stretchColumns="*">
+	<TableRow>
+		<TextView        
+			android:id="@+id/ask_atk_0"        
+			style="@style/b1"
+			android:padding="3dip"
+			android:width="0px"
+			android:text="@string/ask_atk"/>    
+		<EditText        
+			android:id="@+id/atk_entry_0"
+			style="@style/editNumber"
+			android:imeOptions="flagNoExtractUi"/> 
+	</TableRow>
+	
+	<TableRow>
+		<TextView        
+			android:id="@+id/ask_def_0"        
+			style="@style/b1"
+			android:padding="3dip"
+			android:text="@string/ask_def" />    
+		<EditText        
+			android:id="@+id/def_entry_0" 
+			style="@style/editNumber" 
+			android:imeOptions="flagNoExtractUi"/> 
+	</TableRow>
+	
+	<TableRow>
+		<TextView/>
+			<!-- Empty cell as placeholder -->	
+		<Button        
+			android:id="@+id/calculate0"        
+			style="@style/calculateButton"/>    
+	</TableRow>
+	
+	<View        
+		android:layout_height="2dip"        
+		android:background="@color/grey" />
+		
+	<!-- Second portion -->
+
+	<TableLayout
+			android:id="@+id/reveal_chances0"
+			android:layout_width="fill_parent"    
+			android:layout_height="fill_parent"
+			android:stretchColumns="*"
+			android:visibility="invisible">
+		<TableRow>
+			<TextView
+				android:id="@+id/say_current0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_span="2"
+				android:text="@string/say_current0" />	
+			<TextView
+				android:id="@+id/out_current0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_gravity="center"/>
+		</TableRow>
+
+		<TableRow>
+			<TextView
+				android:id="@+id/say_chances0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_span="2"
+				android:text="@string/say_chances0"/>
+			<TextView
+				android:id="@+id/out_chances0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_gravity="center"/>
+		</TableRow>
+		
+		<TableRow>
+			<TextView
+				android:id="@+id/say_remaining0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_span="2"
+				android:text="@string/say_remaining0"/>
+			<TextView
+				android:id="@+id/out_remaining0"        
+				style="@style/b1"
+				android:padding="1dip"
+				android:layout_gravity="center"/>
+		</TableRow>
+
+		<TableRow>
+			<LinearLayout
+					android:orientation="horizontal"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" >
+				<Button
+					android:id="@+id/a_lose_2"        
+					android:layout_width="wrap_content"
+					style="@style/calculateButton" />
+				<Button
+					android:id="@+id/both_lose"        
+					android:layout_width="wrap_content"
+					style="@style/calculateButton" />
+				<Button
+					android:id="@+id/d_lose_2"        
+					android:layout_width="wrap_content"
+					style="@style/calculateButton" />
+				<Button
+					android:id="@+id/risiko_extra"        
+					android:layout_width="wrap_content"
+					style="@style/calculateButton"
+					android:text="" />
+			</LinearLayout>
+		</TableRow>
+	</TableLayout>
+</TableLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

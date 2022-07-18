@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="GraphView">
+        <attr name="title" format="string"/>
+        <attr name="domain_label" format="string"/>
+        <attr name="range_label" format="string"/>
+		
+		<attr name="include_legend" format="boolean"/>
+		<attr name="include_tooltips" format="boolean"/>
+		<attr name="include_urls" format="boolean"/>
+		<attr name="show_crosshairs" format="boolean"/>
+		<attr name="lock_on_data" format="boolean"/>
+		
+		<attr name="chart_bg_color" format="color"/>
+		<attr name="plot_bg_color" format="color"/>
+		<attr name="grid_color" format="color"/>
+		<attr name="label_color" format="color"/>
+		<attr name="crosshair_color" format="color"/>
+		<attr name="tooltip_color" format="color"/>
+    </declare-styleable>
+	<declare-styleable name="TerritoryView">
+    </declare-styleable>
+</resources>

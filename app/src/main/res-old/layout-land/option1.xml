@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout 
+		xmlns:android="http://schemas.android.com/apk/res/android"  
+		xmlns:app=    "http://schemas.android.com/apk/res/net.phoenixramen.risk"
+		android:id="@+id/option1_table"	
+		android:layout_width="fill_parent"    
+		android:layout_height="fill_parent" 
+		android:stretchColumns="1">
+	<TableRow>
+		<TableLayout>
+			<TableRow>
+				<TextView
+					android:id="@+id/ask_def_1"
+					style="@style/b1"
+					android:padding="3dip"
+					android:text="@string/ask_def"/>
+			</TableRow>
+			<TableRow>
+				<EditText        
+					android:id="@+id/def_entry_1"
+					style="@style/editNumber" 
+					android:imeOptions="flagNoExtractUi"/>
+			</TableRow>
+			<TableRow>
+				<Button
+					android:id="@+id/calculate1"
+					style="@style/calculateButton" /> 
+			</TableRow>
+		</TableLayout>
+			<net.phoenixramen.risk.GraphView
+				android:id="@+id/graph1"
+				android:visibility="invisible"
+				android:layout_width="fill_parent"
+				app:domain_label="@string/xlabel1"
+				app:range_label="@string/ylabel1" />
+	</TableRow>
+</TableLayout>

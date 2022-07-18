@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+		style="@style/b1">
+	<LinearLayout 
+			style="@style/b1"
+			android:orientation="vertical">
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_welcome" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_start" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_option0_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_option0_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_option1_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_option1_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_read_graph_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_read_graph_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_use_graph_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_use_graph_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_option2_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_option2_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/help_risiko_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_risiko_b" />
+		<TextView
+			style="@style/h1"
+			android:textColor="@color/blue"
+			android:text="@string/help_estimation_h" />
+		<TextView
+			style="@style/b1"
+			android:text="@string/help_estimation_b" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/proof" />
+		<TextView
+			style="@style/h1"
+			android:text="@string/support" />
+	</LinearLayout>
+</ScrollView>

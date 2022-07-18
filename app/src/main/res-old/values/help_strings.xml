@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="help_welcome">Welcome to the Risk Help File!</string>
+	<string name="help_start">To begin, choose what you would like to calculate.
+		\nThe app assumes that you are the attacker.</string>
+	<string name="help_option0_h">\"What are my odds of winning this fight, 
+		dynamically?\"</string>
+	<string name="help_option0_b">Select this option if you know how many 
+		attackers there are and how many defenders there are.\nPress 
+		\"Calculate\" and the attacker\'s chance of winning will be displayed.
+		\nAs the dice are rolled and armies are lost, you can press the buttons
+		to see how your chances of victory are progressing.</string>
+	<string name="help_option1_h">\"How many armies do I need to win this fight?\"</string>
+	<string name="help_option1_b">Select this option if you know how many 
+		defenders your opponent has and you want to know how many armies you 
+		should attack with.\nPress \"Calculate\" and a graph will appear.</string>
+	<string name="help_read_graph_h">Reading The Graph:</string>
+	<string name="help_read_graph_b">The horizontal axis indicates a number of armies. 
+		The vertical axis indicates a percent chance of victory.\nAs the number
+		of attacking armies increases, the odds of winning increases.\nSelect what you
+		believe to be a reasonable chance of victory, then find the 
+		corresponding number of armies.</string>
+	<string name="help_use_graph_h">Using The Graph:</string>
+	<string name="help_use_graph_b">Slide to scroll\nPinch to zoom
+		\nLong Press to reset zoom</string>
+	<string name="help_option2_h">\"What are my odds of completing this campaign?\"</string>
+	<string name="help_option2_b">Select this option if you will be attacking several 
+		territories in a row.\nIn the first box, enter the number of attackers. In the 
+		second, enter the number of defenders that are in the first territory. Press \"Add 
+		Row\".\nFor now, ignore the new attackers box.\nIn the second defenders box, insert 
+		the number of defenders in the second territory.\nIf there is a
+		third territory, press \"Add Row\" and enter the number of defenders in that 
+		territory.\nRepeat for each defending territory.\nPress \"Calculate!\".\nThis will 
+		display the chance of taking each territory and the expected remaining armies when 
+		that territory is taken.\nTap the first row.\nThis will take you to the dynamic 
+		fight screen, with the text boxes already filled out. Press the buttons as the 
+		battle progresses. At any time, press the back button to return to the campaign 
+		screen. When you do, the row you clicked will be updated with the information from 
+		the battle screen, and every row will be updated with new odds.\nIn addition, a new 
+		attackers box will appear for the next row. If you pressed back while the defender 
+		had zero armies, then the next row will be updated with the number of attackers, 
+		less the one that must stay behind.\nRepeat this until you\'re satisfied.</string>
+	<string name="help_risiko_h">\"Use RisiKo rules\"</string>
+	<string name="help_risiko_b">In the preferences menu, you can set the app to use RisiKo 
+		(also known as European) rules. With these rules, the defender can roll three dice, 
+		not just two. This means in a 3v3 throw, either side could lose up to 3 units at a 
+		time. This favors (under RisiKo rules, favours) the defender.</string>
+	<string name="help_estimation_h">Blue Numbers</string>
+	<string name="help_estimation_b">Blue Numbers indicate that the value is an estimate, 
+		not a direct calculation. Direct calculations become very expensive with large 
+		numbers, such as those where the attacker or defender armies are larger than 1000. 
+		Since these are not numbers likely to appear in an actual Risk game, an estimate 
+		will suffice. If you would like an actual calculation, visit PhoenixRamen.net.
+		</string>
+	<string name="proof_link">To see the proof of all calculations, click the proof link in the app menu.
+		</string>
+	<string name="support">For additional questions or to submit bug reports, 
+		please email support@PhoenixRamen.net</string>
+</resources>

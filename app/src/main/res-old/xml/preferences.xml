@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference
+        android:key="pref_risiko"
+        android:title="@string/pref_risiko"
+        android:summary="@string/pref_risiko_summary"
+        android:defaultValue="false" 
+		android:persistent="true" />
+</PreferenceScreen>

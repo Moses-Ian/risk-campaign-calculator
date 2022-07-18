@@ -1,0 +1,1 @@
+start C:\Users\Ian\AppData\Local\Android\Sdk\emulator\emulator.exe -avd Pixel_4_API_30

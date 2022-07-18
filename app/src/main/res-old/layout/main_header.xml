@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/main_question_style_old"
+	style="@style/b1"
+	android:padding="1dip"
+	android:text="@string/main_question" >
+</TextView>

@@ -1,0 +1,1 @@
+start C:\Users\Ian\AppData\Local\Android\Sdk\platform-tools\adb.exe logcat MainActivity:V AndroidRuntime:E *:S
