@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		style="@style/b1"
+		android:orientation="vertical">
+
+	<TextView
+		android:id="@+id/main_question_style"
+		style="@style/h1"
+		android:padding="1dp"
+		android:text="@string/main_question" />
+
+	<ListView
+		android:id="@+id/list"
+		style="@style/b1" />
+
+</LinearLayout>

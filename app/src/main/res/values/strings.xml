@@ -1,3 +1,56 @@
 <resources>
-    <string name="app_name">Risk Campaign Calculator</string>
+<!-- main -->
+  <string name="app_name">Risk Campaign Calculator</string>
+	<string name="main_question">What would you like to find out?</string>
+	<string-array name="main_options_array">
+		<item>What are my odds of winning this fight, dynamically?</item>
+		<item>How many armies do I need to win this fight?</item>
+		<item>What are my odds of completing this campaign?</item>
+	</string-array>
+
+<!-- global -->
+	<string name="ask_atk">Number of attacking armies:\n(Not including the one that can\'t attack)</string>
+	<string name="ask_def">Number of defending armies:</string>
+	<string name="calculate">Calculate!</string>
+	<string name="add">Add Row</string>
+	
+	<string name="atk_entry_invalid">The number of attacking armies must be a positive integer</string>
+	<string name="def_entry_invalid">The number of defending armies must be a positive integer</string>
+	
+	<string name="help">Help</string>
+	<string name="proof">Proof</string>
+	<string name="revert">Return</string>
+	<string name="preferences">Preferences</string>
+
+<!-- option0 -->	
+	<string name="say_chances0">Your chances of winning are </string>
+	<string name="a">Attacker lost 1</string>
+	<string name="d">Defender lost 1</string>	
+	<string name="a2">Attacker\nlost 2</string>
+	<string name="ad">Both\nlost 1</string>
+	<string name="d2">Defender\nlost 2</string>
+	<string name="a3">Attacker\nlost 3</string>
+	<string name="a2d">Attacker lost 2 \nand Defender lost 1</string>
+	<string name="ad2">Attacker lost 1 \nand Defender lost 2</string>
+	<string name="d3">Defender\nlost 3</string>
+	
+	<string name="say_current0">The current battle is</string>
+	<string name="say_remaining0">If you win, the expected remaining army count is</string>
+
+<!-- option1 -->
+	<string name="select1">You have made selection 1!</string>
+	<string name="xlabel1">Number of Attacking Armies</string>
+	<string name="ylabel1">Percent Chance of Taking Territory</string>
+	<string name="odds1">Odds</string>
+	<string name="remaining1">Remaining</string>
+	
+<!-- option2 -->
+	<string name="attackers">Attackers</string>
+	<string name="defenders">Defenders</string>
+	<string name="clear">Clear</string>
+	
+<!-- preferences -->
+	<string name="pref_risiko">Use RisiKo! rules</string>
+	<string name="pref_risiko_summary">The defender can roll 3 dice</string>
+
 </resources>
