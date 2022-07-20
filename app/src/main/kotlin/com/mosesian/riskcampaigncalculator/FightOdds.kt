@@ -2,7 +2,6 @@ package com.mosesian.riskcampaigncalculator
 
 import android.app.Activity
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -10,12 +9,21 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 
 class FightOdds : AppCompatActivity() {
 	
+	var useRisiko = false
 	var currentAttackers: Int = 0
 	var currentDefenders: Int = 0
+	lateinit var odds: Array<Array<Double>>
+	lateinit var remainingAttackers: Array<Array<Double>>
+	
+	//colors
+	var BLUE = 0
+	var DARK_GREY = 0
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -23,7 +31,7 @@ class FightOdds : AppCompatActivity() {
 		
 		//get the preferences
 		//TODO: get preferences and set useRisiko
-		val useRisiko = false
+		useRisiko = false
 		
 		//get the page elements
 		val calcButton : Button = findViewById(R.id.calculate0)
@@ -39,7 +47,8 @@ class FightOdds : AppCompatActivity() {
 		calcButton.setOnClickListener {calcButton -> initialCalculateClick(calcButton)}
 		
 		//set colors
-		
+		BLUE = ContextCompat.getColor(this, R.color.blue)
+		DARK_GREY = ContextCompat.getColor(this, R.color.dark_grey)
 		
 		//created by option2
 		
@@ -92,21 +101,66 @@ class FightOdds : AppCompatActivity() {
 	}
 	
 	fun createOddsMatrix() {
-		Log.v(TAG, "create odds matrix")
-		Log.v(TAG, currentAttackers.toString())
-		Log.v(TAG, currentDefenders.toString())
+		//initialize the matrixes
+		val atkSize = if (currentAttackers >= 1000) 1001 else currentAttackers+1
+		val defSize = if (currentDefenders >= 1000) 1001 else currentDefenders+1
+		odds = Array(atkSize, {
+				Array(defSize, {0.0})
+		})
+		remainingAttackers = Array(atkSize, {
+				Array(defSize, {0.0})
+		})
+		
+		//populate them
+		if (useRisiko) {
+		// populateOddsMatrixRisiko(odds)
+		// populateRemainingAttackersRisiko(remainingAttackers)
+		} else {
+		// populateOddsMatrix(odds)
+		// populateRemainingAttackers(remainingAttackers)
+		}
 		
 		updateLayout()
 	}
 	
 	fun updateLayout() {
-		// populate fields
+		//get view elements
 		val currentFightText: TextView = findViewById(R.id.out_current0)
+		val oddsText: TextView = findViewById(R.id.out_chances0)
+		val remainingAttackersText: TextView = findViewById(R.id.out_remaining0)
+
+		//prepare the data
+		var chances: Double
+		var remaining: Double
+		if (isEstimate()) {
+			// chances = estimateProbability(currentAttackers, currentDefenders, useRisiko)
+			chances = 1.0
+			remaining = 0.0
+		} else {
+			chances = odds[currentAttackers][currentDefenders] * 100
+			remaining = remainingAttackers[currentAttackers][currentDefenders]
+		}
+
+		// populate fields
 		currentFightText.setText("$currentAttackers v $currentDefenders")
+		oddsText.setText("$chances")
+		remainingAttackersText.setText(if (isEstimate()) "?" else "$remaining")
 		
+		// set text color
+		if (isEstimate()) {
+			oddsText.setTextColor(BLUE)
+			remainingAttackersText.setTextColor(BLUE)
+		} else {
+			oddsText.setTextColor(DARK_GREY)
+			remainingAttackersText.setTextColor(DARK_GREY)
+		}		
 		
 		//show the view
 		(findViewById(R.id.reveal_chances0) as View).setVisibility(0)
+	}
+	
+	fun isEstimate(): Boolean {
+		return currentAttackers >= 1000 || currentDefenders >= 1000
 	}
 }
 
