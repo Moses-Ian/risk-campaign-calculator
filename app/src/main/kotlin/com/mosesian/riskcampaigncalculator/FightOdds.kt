@@ -112,13 +112,15 @@ class FightOdds : AppCompatActivity() {
 		})
 		
 		//populate them
-		if (useRisiko) {
-		// populateOddsMatrixRisiko(odds)
-		// populateRemainingAttackersRisiko(remainingAttackers)
-		} else {
-		// populateOddsMatrix(odds)
-		// populateRemainingAttackers(remainingAttackers)
-		}
+		useRisiko = true
+		populateOddsMatrix(odds, useRisiko)
+		populateRemainingAttackers(remainingAttackers, useRisiko)
+		
+		
+		
+		
+		
+		
 		
 		updateLayout()
 	}
@@ -143,8 +145,8 @@ class FightOdds : AppCompatActivity() {
 
 		// populate fields
 		currentFightText.setText("$currentAttackers v $currentDefenders")
-		oddsText.setText("$chances")
-		remainingAttackersText.setText(if (isEstimate()) "?" else "$remaining")
+		oddsText.setText(String.format("%.2f%%", chances))
+		remainingAttackersText.setText(if (isEstimate()) "?" else String.format("%.1f", remaining))
 		
 		// set text color
 		if (isEstimate()) {
