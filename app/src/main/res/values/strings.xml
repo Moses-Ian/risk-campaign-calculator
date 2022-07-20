@@ -14,8 +14,8 @@
 	<string name="calculate">Calculate!</string>
 	<string name="add">Add Row</string>
 	
-	<string name="atk_entry_invalid">The number of attacking armies must be a positive integer</string>
-	<string name="def_entry_invalid">The number of defending armies must be a positive integer</string>
+	<string name="atk_entry_invalid">The number of attacking armies must be a positive whole number.</string>
+	<string name="def_entry_invalid">The number of defending armies must be a positive whole number.</string>
 	
 	<string name="help">Help</string>
 	<string name="proof">Proof</string>
