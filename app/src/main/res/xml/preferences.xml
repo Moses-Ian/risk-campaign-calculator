@@ -4,5 +4,5 @@
         android:title="@string/pref_risiko"
         android:summary="@string/pref_risiko_summary"
         android:defaultValue="false" 
-		android:persistent="true" />
+				android:persistent="true" />
 </PreferenceScreen>
