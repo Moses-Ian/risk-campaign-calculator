@@ -1,5 +1,6 @@
 package com.mosesian.riskcampaigncalculator
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 // import androidx.preference.PreferenceManager
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 				// else -> "class2"
 			// }
 			
-			// startActivity(intent)
+			val intent = Intent(this, FightOdds::class.java)
+			startActivity(intent)
 		}
 		
 		//log if successful
