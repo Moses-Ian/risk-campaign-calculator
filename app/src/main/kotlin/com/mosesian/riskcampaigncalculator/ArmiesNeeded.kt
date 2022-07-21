@@ -3,10 +3,12 @@ package com.mosesian.riskcampaigncalculator
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import android.widget.TextView.OnEditorActionListener
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
@@ -26,10 +28,18 @@ class ArmiesNeeded : AppCompatActivity() {
 		//get the elements
 		//fuck me there's a graph
 		val calcButton: Button = findViewById(R.id.calculate1)
+		val defEntry: EditText = findViewById(R.id.def_entry_1)
 		
 		//set the click handler
 		calcButton.setOnClickListener {calcButton -> calculate(calcButton)}
 		
+		defEntry.setOnEditorActionListener { view, actionId, event -> 
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				calcButton.performClick()
+				true
+			} else 
+				false
+		}
 		
 		//apparently the edit button is able to perform click??
 		

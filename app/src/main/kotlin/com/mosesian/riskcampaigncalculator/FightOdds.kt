@@ -3,6 +3,7 @@ package com.mosesian.riskcampaigncalculator
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
@@ -45,9 +46,7 @@ class FightOdds : AppCompatActivity() {
 		val bothLoseBtn :    Button = findViewById(R.id.both_lose)
 		val dLose2Btn :      Button = findViewById(R.id.d_lose_2)
 		val risikoExtraBtn : Button = findViewById(R.id.risiko_extra)
-		// tv1 = (TextView) findViewById(R.id.out_current0);	//atk v def textview
-		// tv2 = (TextView) findViewById(R.id.out_chances0);
-		// tv3 = (TextView) findViewById(R.id.out_remaining0);
+		val defEditText : EditText = findViewById(R.id.def_entry_0)
 		
 		//set the listeners
 		calcButton.setOnClickListener {calcButton -> initialCalculateClick(calcButton)}
@@ -56,6 +55,13 @@ class FightOdds : AppCompatActivity() {
 		bothLoseBtn.setOnClickListener {_ -> updateOdds(2)}
 		dLose2Btn.setOnClickListener {_ -> updateOdds(3)}
 		risikoExtraBtn.setOnClickListener {_ -> updateOdds(4)}
+		defEditText.setOnEditorActionListener { view, actionId, event -> 
+			if (actionId == EditorInfo.IME_ACTION_DONE) {
+				calcButton.performClick()
+				true
+			} else 
+				false
+		}
 		
 		//set colors
 		BLUE = ContextCompat.getColor(this, R.color.blue)
