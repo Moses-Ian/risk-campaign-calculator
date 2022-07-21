@@ -25,6 +25,12 @@ class FightOdds : AppCompatActivity() {
 	var BLUE = 0
 	var DARK_GREY = 0
 	
+	//match state
+	enum class BattleState {
+		MATCH_OVER, ONE_LOSS, TWO_LOSS, THREE_LOSS
+	}
+	var state: BattleState = BattleState.MATCH_OVER
+	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.fight_odds)
@@ -35,16 +41,21 @@ class FightOdds : AppCompatActivity() {
 		
 		//get the page elements
 		val calcButton : Button = findViewById(R.id.calculate0)
-		// button1 = (Button) findViewById(R.id.a_lose_2);
-		// button2 = (Button) findViewById(R.id.both_lose);
-		// button3 = (Button) findViewById(R.id.d_lose_2);
-		// button4 = (Button) findViewById(R.id.risiko_extra);
+		val aLose2Btn :      Button = findViewById(R.id.a_lose_2)
+		val bothLoseBtn :    Button = findViewById(R.id.both_lose)
+		val dLose2Btn :      Button = findViewById(R.id.d_lose_2)
+		val risikoExtraBtn : Button = findViewById(R.id.risiko_extra)
 		// tv1 = (TextView) findViewById(R.id.out_current0);	//atk v def textview
 		// tv2 = (TextView) findViewById(R.id.out_chances0);
 		// tv3 = (TextView) findViewById(R.id.out_remaining0);
 		
 		//set the listeners
 		calcButton.setOnClickListener {calcButton -> initialCalculateClick(calcButton)}
+		
+		aLose2Btn.setOnClickListener {_ -> updateOdds(1)}
+		bothLoseBtn.setOnClickListener {_ -> updateOdds(2)}
+		dLose2Btn.setOnClickListener {_ -> updateOdds(3)}
+		risikoExtraBtn.setOnClickListener {_ -> updateOdds(4)}
 		
 		//set colors
 		BLUE = ContextCompat.getColor(this, R.color.blue)
@@ -54,8 +65,14 @@ class FightOdds : AppCompatActivity() {
 		
 		
 		//savedInstanceState stuff
-		
-		
+		// if (savedInstanceState != null) {
+			// val list = savedInstanceState.getIntArray("currentFight")
+			// if (list != null) {
+				// currentAttackers = list[0]
+				// currentDefenders = list[1]
+				// createOddsMatrix()
+			// }
+		// }
 		
 		Log.v(TAG, "FightOdds")
 	}
@@ -112,16 +129,50 @@ class FightOdds : AppCompatActivity() {
 		})
 		
 		//populate them
-		useRisiko = true
 		populateOddsMatrix(odds, useRisiko)
 		populateRemainingAttackers(remainingAttackers, useRisiko)
 		
+		//update the page
+		updateLayout()
+	}
+	
+	fun updateOdds(caller: Int) {
+		// update the army counts
+		when(state) {
+			BattleState.ONE_LOSS -> {
+				if (caller == 1)
+					currentAttackers--
+				else
+					currentDefenders--
+			}
+			BattleState.TWO_LOSS -> {
+				if (caller == 1)
+					currentAttackers -= 2
+				else if (caller == 2) {
+					currentAttackers--
+					currentDefenders--
+				} else
+					currentDefenders -= 2
+			}
+			BattleState.THREE_LOSS -> {
+				if (caller == 1)
+					currentAttackers--
+				else if (caller == 2) {
+					currentAttackers -= 2
+					currentDefenders--
+				} else if (caller == 3) {
+					currentAttackers--
+					currentDefenders -= 2
+				} else
+					currentDefenders -= 3
+			}
+			BattleState.MATCH_OVER -> {}
+		}
 		
+		//if created by option2, do something
+		//something
 		
-		
-		
-		
-		
+		//update the page
 		updateLayout()
 	}
 	
@@ -135,8 +186,7 @@ class FightOdds : AppCompatActivity() {
 		var chances: Double
 		var remaining: Double
 		if (isEstimate()) {
-			// chances = estimateProbability(currentAttackers, currentDefenders, useRisiko)
-			chances = 1.0
+			chances = estimateProbability(currentAttackers, currentDefenders, useRisiko) * 100
 			remaining = 0.0
 		} else {
 			chances = odds[currentAttackers][currentDefenders] * 100
@@ -157,6 +207,61 @@ class FightOdds : AppCompatActivity() {
 			remainingAttackersText.setTextColor(DARK_GREY)
 		}		
 		
+		// set the state
+		state = 
+			if (useRisiko && currentAttackers >= 3 && currentDefenders >= 3) BattleState.THREE_LOSS
+			else if (currentAttackers >= 2 && currentDefenders >= 2) BattleState.TWO_LOSS
+			else if (currentAttackers >= 1 && currentDefenders >= 1) BattleState.ONE_LOSS
+			else BattleState.MATCH_OVER
+		
+		// get the elements
+		val aLose2Btn :      Button = findViewById(R.id.a_lose_2)
+		val bothLoseBtn :    Button = findViewById(R.id.both_lose)
+		val dLose2Btn :      Button = findViewById(R.id.d_lose_2)
+		val risikoExtraBtn : Button = findViewById(R.id.risiko_extra)
+		
+		// show/hide buttons depending on state
+		when(state) {
+			BattleState.MATCH_OVER -> {
+				aLose2Btn.setVisibility(View.GONE)
+				bothLoseBtn.setVisibility(View.GONE)
+				dLose2Btn.setVisibility(View.GONE)
+				risikoExtraBtn.setVisibility(View.GONE)
+			}
+			BattleState.ONE_LOSS -> {
+				aLose2Btn.setText(R.string.a)
+				bothLoseBtn.setText(R.string.d)
+				
+				aLose2Btn.setVisibility(View.VISIBLE)
+				bothLoseBtn.setVisibility(View.VISIBLE)
+				dLose2Btn.setVisibility(View.GONE)
+				risikoExtraBtn.setVisibility(View.GONE)
+			}
+			BattleState.TWO_LOSS -> {
+				aLose2Btn.setText(R.string.a2)
+				bothLoseBtn.setText(R.string.ad)
+				dLose2Btn.setText(R.string.d2)
+				
+				aLose2Btn.setVisibility(View.VISIBLE)
+				bothLoseBtn.setVisibility(View.VISIBLE)
+				dLose2Btn.setVisibility(View.VISIBLE)
+				risikoExtraBtn.setVisibility(View.GONE)
+			}
+			BattleState.THREE_LOSS -> {
+				aLose2Btn.setText(R.string.a3)
+				bothLoseBtn.setText(R.string.a2d)
+				dLose2Btn.setText(R.string.ad2)
+				risikoExtraBtn.setText(R.string.d3)
+				
+				aLose2Btn.setVisibility(View.VISIBLE)
+				bothLoseBtn.setVisibility(View.VISIBLE)
+				dLose2Btn.setVisibility(View.VISIBLE)
+				risikoExtraBtn.setVisibility(View.VISIBLE)
+			}
+		}
+		
+		
+		
 		//show the view
 		(findViewById(R.id.reveal_chances0) as View).setVisibility(0)
 	}
@@ -164,7 +269,40 @@ class FightOdds : AppCompatActivity() {
 	fun isEstimate(): Boolean {
 		return currentAttackers >= 1000 || currentDefenders >= 1000
 	}
-}
+
+/* 	override fun onSaveInstanceState(outState: Bundle) {
+		Log.v(TAG, "save instance")
+		
+		//save values to an array
+		val list = ArrayList<Int>()
+		list.add(currentAttackers)
+		list.add(currentDefenders)
+		
+		//save that array to a bundle
+		outState.putIntegerArrayList(
+			"currentFight",
+			list
+		)
+		
+		//do your thing!
+		super.onSaveInstanceState(outState)
+	}
+	
+	override fun onResume() {
+		super.onResume()
+		Log.v(TAG, "resume")
+		
+		//hide the keyboard
+		hideKeyboard(getWindow() as View)
+		
+		//preferences
+		
+		
+		//if the preferences changed, we need to update everything
+		
+		
+	}
+ */}
 
 
 

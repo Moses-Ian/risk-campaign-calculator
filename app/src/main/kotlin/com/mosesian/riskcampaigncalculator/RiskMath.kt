@@ -161,7 +161,10 @@ fun findAtkLossRisiko(atkLost: Array<Array<Double>>, a: Int, d: Int) {
 		else -1.0
 }
 
-
+fun estimateProbability(attackers: Int, defenders: Int, useRisiko: Boolean = false) : Double {
+	//I need to re-analyze my math here. I'm sure there's something simpler than what my old code was doing
+	return 0.5
+}
 
 
 
