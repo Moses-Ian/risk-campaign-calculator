@@ -60,7 +60,7 @@
 			android:id="@+id/scroll2"
 			style="@style/b1" >
 		<LinearLayout
-				android:id="@+id/linear2"
+				android:id="@+id/campaign_list"
 				style="@style/b1"
 				android:orientation="vertical">
 		</LinearLayout>
