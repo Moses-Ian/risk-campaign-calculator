@@ -30,6 +30,10 @@
 				<activity android:name="ArmiesNeeded"
 						android:windowSoftInputMode="stateVisible">
 				</activity>
+				
+				<activity android:name="CampaignOdds"
+						android:windowSoftInputMode="stateVisible">
+				</activity>
     </application>
 
 </manifest>

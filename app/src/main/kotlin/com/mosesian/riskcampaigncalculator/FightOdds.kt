@@ -51,10 +51,10 @@ class FightOdds : AppCompatActivity() {
 		//set the listeners
 		calcButton.setOnClickListener {calcButton -> initialCalculateClick(calcButton)}
 		
-		aLose2Btn.setOnClickListener {_ -> updateOdds(1)}
-		bothLoseBtn.setOnClickListener {_ -> updateOdds(2)}
-		dLose2Btn.setOnClickListener {_ -> updateOdds(3)}
-		risikoExtraBtn.setOnClickListener {_ -> updateOdds(4)}
+		aLose2Btn.setOnClickListener { updateOdds(1) }
+		bothLoseBtn.setOnClickListener { updateOdds(2) }
+		dLose2Btn.setOnClickListener { updateOdds(3) }
+		risikoExtraBtn.setOnClickListener { updateOdds(4) }
 		defEditText.setOnEditorActionListener { view, actionId, event -> 
 			if (actionId == EditorInfo.IME_ACTION_DONE) {
 				calcButton.performClick()

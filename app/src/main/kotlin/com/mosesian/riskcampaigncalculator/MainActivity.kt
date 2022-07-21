@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
 		lv.setOnItemClickListener {parent, view, position, id ->
 			val intent = when(id) {
 				0L -> Intent(this, FightOdds::class.java)
-				else -> Intent(this, ArmiesNeeded::class.java)
-				// else -> "class2"
+				1L -> Intent(this, ArmiesNeeded::class.java)
+				else -> Intent(this, CampaignOdds::class.java)
 			}
 			
 			startActivity(intent)
