@@ -27,13 +27,12 @@ class MainActivity : AppCompatActivity() {
 		
 		//set the listview click handler
 		lv.setOnItemClickListener {parent, view, position, id ->
-			// val intent = when(id) {
-				// 0L -> "class0"
-				// 1L -> "class1"
+			val intent = when(id) {
+				0L -> Intent(this, FightOdds::class.java)
+				else -> Intent(this, ArmiesNeeded::class.java)
 				// else -> "class2"
-			// }
+			}
 			
-			val intent = Intent(this, FightOdds::class.java)
 			startActivity(intent)
 		}
 		

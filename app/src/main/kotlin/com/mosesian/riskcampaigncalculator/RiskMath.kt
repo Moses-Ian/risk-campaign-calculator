@@ -2,6 +2,8 @@ package com.mosesian.riskcampaigncalculator
 
 import android.util.Log
 
+val TOLERANCE = 0.99
+
 //commonly accepted values for single-throw probabilities for true dice		
 
 // 1v1

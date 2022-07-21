@@ -1,0 +1,47 @@
+<TableLayout 
+		xmlns:android="http://schemas.android.com/apk/res/android"  
+		xmlns:app=    "http://schemas.android.com/apk/res/com.mosesian.riskcampaigncalculator"
+		android:id="@+id/option1_table"	
+		android:layout_width="fill_parent"    
+		android:layout_height="fill_parent" 
+		android:stretchColumns="1">
+	<TableRow>
+		<TextView
+			android:id="@+id/ask_def_1"
+			style="@style/b1"
+			android:padding="3dip"
+			android:text="@string/ask_def"/>
+		<EditText        
+			android:id="@+id/def_entry_1"
+			style="@style/editNumber" />
+	</TableRow>
+
+	<TableRow>
+		<TextView/>
+			<!-- placeholder -->
+		<Button
+			android:id="@+id/calculate1"
+			style="@style/calculateButton" /> 
+	</TableRow>
+
+	<!-- <TableRow> -->
+		<!-- <net.phoenixramen.risk.GraphView -->
+			<!-- android:id="@+id/graph1" -->
+			<!-- android:visibility="invisible" -->
+			<!-- android:layout_span="2" -->
+			<!-- android:layout_width="fill_parent" -->
+			<!-- app:domain_label="@string/xlabel1" -->
+			<!-- app:range_label="@string/ylabel1" /> -->
+	<!-- </TableRow> -->
+	
+	<!-- TableRow>
+		<Button
+			android:id="@+id/odds1"
+			style="@style/calculateButton"
+			android:text="@string/odds1"/> 
+		<Button
+			android:id="@+id/remaining1"
+			style="@style/calculateButton"
+			android:text="@string/remaining1"/> 
+	</TableRow -->
+</TableLayout>

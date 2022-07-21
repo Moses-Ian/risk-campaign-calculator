@@ -26,6 +26,10 @@
 				<activity android:name="FightOdds"
 						android:windowSoftInputMode="stateVisible">
 				</activity>
+				
+				<activity android:name="ArmiesNeeded"
+						android:windowSoftInputMode="stateVisible">
+				</activity>
     </application>
 
 </manifest>
