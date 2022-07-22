@@ -1,9 +1,11 @@
 package com.mosesian.riskcampaigncalculator
 
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
@@ -15,6 +17,10 @@ class CampaignOdds : AppCompatActivity() {
 	//colors
 	var BLUE = 0
 	var DARK_GREY = 0
+	
+	// Territory View Array
+	lateinit var tvArray: TerritoryViewArray
+	lateinit var campaignList: LinearLayout
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -50,17 +56,41 @@ class CampaignOdds : AppCompatActivity() {
 	
 	fun initialize() {
 		Log.v(TAG, "initialize")
-		val campaignList: LinearLayout = findViewById(R.id.campaign_list)
+		// create the campaignlist
+		campaignList = findViewById(R.id.campaign_list)
 		campaignList.removeAllViews()
+
+		// create the territory view array
+		tvArray = TerritoryViewArray()
 		
+		// add a row
+		addRow()
 	}
 	
 	fun addRow() {
 		Log.v(TAG, "add row")
+		// create the territory view item
+		val inflater: LayoutInflater = getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+		val territoryView = inflater.inflate(R.layout.territory_item, campaignList, false)
+		
+		// set the click listener
+		territoryView.setOnClickListener { startFightOdds() }
+		
+		// add it to the views
+		campaignList.addView(territoryView)
+		tvArray.add(territoryView)
+		
+		
 	}
 	
 	fun pathAnalysis() {
 		Log.v(TAG, "path analysis")
+	}
+	
+	fun startFightOdds() {
+		Log.v(TAG, "start fight odds")
+		// do something
+		// this is the function defined on option2.java -> line 41
 	}
 
 	fun hideKeyboard(view: View) {
