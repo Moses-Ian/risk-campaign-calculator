@@ -49,13 +49,13 @@ class FightOdds : AppCompatActivity() {
 		val defEditText : EditText = findViewById(R.id.def_entry_0)
 		
 		//set the listeners
-		calcButton.setOnClickListener {calcButton -> initialCalculateClick(calcButton)}
+		calcButton.setOnClickListener {_calcButton -> initialCalculateClick(_calcButton)}
 		
 		aLose2Btn.setOnClickListener { updateOdds(1) }
 		bothLoseBtn.setOnClickListener { updateOdds(2) }
 		dLose2Btn.setOnClickListener { updateOdds(3) }
 		risikoExtraBtn.setOnClickListener { updateOdds(4) }
-		defEditText.setOnEditorActionListener { view, actionId, event -> 
+		defEditText.setOnEditorActionListener { _, actionId, _ -> 
 			if (actionId == EditorInfo.IME_ACTION_DONE) {
 				calcButton.performClick()
 				true
@@ -87,7 +87,7 @@ class FightOdds : AppCompatActivity() {
 		hideKeyboard(calcButton)
 		
 		//get the attackers
-		val atkEditText = findViewById(R.id.atk_entry_0) as EditText
+		val atkEditText: EditText = findViewById(R.id.atk_entry_0)
 		var attackers: Int
 		try {
 			attackers = atkEditText.getText().toString().toInt()

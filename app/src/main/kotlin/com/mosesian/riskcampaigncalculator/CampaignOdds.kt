@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
@@ -35,9 +36,9 @@ class CampaignOdds : AppCompatActivity() {
 		val clearButton: Button = findViewById(R.id.clear2)
 		
 		// attach listeners
-		calcButton.setOnClickListener {calcButton -> 
-			hideKeyboard(calcButton)
-			pathAnalysis()
+		calcButton.setOnClickListener {_calcButton -> 
+			hideKeyboard(_calcButton)
+			setupPathAnalysis()
 		}
 		
 		addRowButton.setOnClickListener { addRow() }
@@ -74,7 +75,7 @@ class CampaignOdds : AppCompatActivity() {
 		val territoryView = inflater.inflate(R.layout.territory_item, campaignList, false)
 		
 		// set the click listener
-		territoryView.setOnClickListener { startFightOdds() }
+		territoryView.setOnClickListener { view: View -> startFightOdds(view) }
 		
 		// add it to the views
 		campaignList.addView(territoryView)
@@ -83,11 +84,22 @@ class CampaignOdds : AppCompatActivity() {
 		
 	}
 	
-	fun pathAnalysis() {
-		Log.v(TAG, "path analysis")
+	fun setupPathAnalysis() {
+		// update the data with the data from the views
+		val result = tvArray.updateData()
+		
+		// extract the data
+		val territory_data = tvArray.territoryArray
+		
+		// do the math
+		pathAnalysis(territory_data)	// updates territory_data
+		
+		// update the views
+		tvArray.updateAll()
+		
 	}
 	
-	fun startFightOdds() {
+	fun startFightOdds(view: View) {
 		Log.v(TAG, "start fight odds")
 		// do something
 		// this is the function defined on option2.java -> line 41

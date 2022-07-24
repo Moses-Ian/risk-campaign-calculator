@@ -31,9 +31,9 @@ class ArmiesNeeded : AppCompatActivity() {
 		val defEntry: EditText = findViewById(R.id.def_entry_1)
 		
 		//set the click handler
-		calcButton.setOnClickListener {calcButton -> calculate(calcButton)}
+		calcButton.setOnClickListener {_calcButton -> calculate(_calcButton)}
 		
-		defEntry.setOnEditorActionListener { view, actionId, event -> 
+		defEntry.setOnEditorActionListener { _, actionId, _ -> 
 			if (actionId == EditorInfo.IME_ACTION_DONE) {
 				calcButton.performClick()
 				true
@@ -87,16 +87,16 @@ class ArmiesNeeded : AppCompatActivity() {
 		odds = Array(1, {
 				Array(1, {0.0})
 		})
-		var i = 0
-		var j = 0
+		var i: Int
+		var j: Int
 		var prev = 0
 		
 		do {
 			extendOddsArray()
 			
-			for(i in prev..(odds.size-1)) {
-				for(j in 0..(odds[0].size-1)) {
-					findOdds(odds, i, j)
+			for(_i in prev..(odds.size-1)) {
+				for(_j in 0..(odds[0].size-1)) {
+					findOdds(odds, _i, _j)
 				}
 			}
 			

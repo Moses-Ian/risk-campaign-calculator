@@ -168,12 +168,135 @@ fun estimateProbability(attackers: Int, defenders: Int, useRisiko: Boolean = fal
 	return 0.5
 }
 
+fun estimateRemaining(attackers: Int, defenders: Int, useRisiko: Boolean = false) : Double {
+	//this is new
+	return -2.0
+}
 
+fun pathAnalysis(territories: ArrayList<Territory>) {
+	Log.v(TAG, "path analysis")
+	// make sure there are actually armies to calculate
+	if (territories[0].attackingArmies == -1 || territories[0].defendingArmies == -1)
+		return
+	
+	// initialize the victory array
+	var victory = emptyArray<Double>()
+	
+	// do math
+	territories.forEachIndexed {index, territory -> 
+		// if garbage in, set default values
+		if (territory.defendingArmies <= 0) {
+			territory.oddsOfWinning = -1.0
+			territory.expectedRemaining = -1.0
+			return
+		}			
+		
+		//if this is an estimate, or the previous was an estimate
+		if (territory.attackingArmies >= 1000 || territory.defendingArmies >= 1000 || (index != 0 && territories[index-1].estimate)) {
+			estimateAnalysis(index, territory, territories)
+		} else {
+			victory = territoryAnalysis(index, territory, territories, victory)
+		}
+	}
+}
 
+fun estimateAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>) {
+	// the idea here is that each row's attackers will be the previous row's remaining armies
+	// the defenders won't change
+	// the odds will be the estimated odds
+	// the expected remaining will also be estimated
+	
+	var attackers = territory.attackingArmies
+	var defenders = territory.defendingArmies
+	
+	// if attackers == -1
+	if (attackers == -1)
+		attackers = territories[index-1].expectedRemaining.toInt()
+	
+	//estimate odds
+	val odds = estimateProbability(attackers, defenders)
+	val expRemaining = estimateRemaining(attackers, defenders)
+	
+	territory.attackingArmies = attackers
+	territory.defendingArmies = defenders	//redundant but that's ok
+	territory.oddsOfWinning = odds
+	territory.expectedRemaining = expRemaining
+	territory.estimate = true
+}
 
+fun territoryAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>, victory: Array<Double>): Array<Double> {
+	
+	var _victory = victory
+	
+	// if the user set the number of armies
+	if (territory.attackingArmies != -1) {
+		// calculate victory from a single number of attackers
+		_victory = createVictoryArray(territory.attackingArmies, territory.defendingArmies)
+	} else {
+		// if this is a continuation
+		// shift victory down
+		for(i in 0..(victory.size-2))
+			_victory[i] = victory[i+1]
+		_victory[ victory.size-1 ] = 0.0
+		
+		// create a new victory array
+		val newVictory = Array(_victory.size-1, {0.0})
+		
+		// for each possible number of attacking armies in victory...
+		_victory.forEachIndexed { index, probability -> 
+			if (probability <= 0) return newVictory
+			
+			// create a transitionOdds matrix
+			val transitionOdds = createVictoryArray(index, territory.defendingArmies)
+			
+			// update the newVictory array
+			for (i in 0..(transitionOdds.size-1))
+				newVictory[i] += probability * transitionOdds[i]
+		}
+		
+		// update victory
+		_victory = newVictory
+	}
+	
+	// calculate odds and expected remaining
+	var odds = 0.0
+	var expRemaining = 0.0
+	for (i in 0..(_victory.size-1)) {
+		odds += _victory[i]
+		expRemaining += _victory[i] * i
+	}
+	
+	// update the territory
+	territory.oddsOfWinning = odds
+	territory.expectedRemaining = expRemaining
+	
+	// return the victory array
+	return _victory
+}
 
+fun createVictoryArray(attackers: Int, defenders: Int): Array<Double> {
+	
+	// transitionOdds has a 3 cell buffer to simplify calculations
+	val transitionOdds = Array(attackers+3, {
+		Array(defenders+3, {0.0})
+	})
+	transitionOdds[attackers][defenders] = 1.0
+	for(i in attackers..0)
+		for(j in defenders..0)
+			transitionOdds[i][j] = findTransitionOdds(transitionOdds, i, j)
 
+	// create the victory array...
+	val victory = Array(attackers+1, {0.0})
+	for(i in 0..(victory.size-1))
+		victory[i] = transitionOdds[i][0]
+	
+	// ...and return it
+	return victory
+}
 
+fun findTransitionOdds(transitionOdds: Array<Array<Double>>, atk: Int, def: Int): Double {
+	return 0.33
+}
 
 
 

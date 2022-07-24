@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 		lv.setTextFilterEnabled(true)
 		
 		//set the listview click handler
-		lv.setOnItemClickListener {parent, view, position, id ->
+		lv.setOnItemClickListener {_, _, _, id ->
 			val intent = when(id) {
 				0L -> Intent(this, FightOdds::class.java)
 				1L -> Intent(this, ArmiesNeeded::class.java)
