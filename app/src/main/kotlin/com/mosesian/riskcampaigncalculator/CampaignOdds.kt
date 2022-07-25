@@ -137,6 +137,35 @@ class CampaignOdds : AppCompatActivity() {
 	
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 		Log.v(TAG, "on activity result")
+		if (data == null || requestCode != REQUEST_CODE_FOR_CAMPAIGNODDS_AND_FIGHTODDS || resultCode != Activity.RESULT_OK)
+			return
+		
+		val intentExtras: Bundle? = data.getExtras()
+		if (intentExtras == null)
+			return
+		
+		// get the data
+		val row = intentExtras.getInt("row")
+		val attackingArmies = intentExtras.getInt("attackingArmies")
+		val defendingArmies = intentExtras.getInt("defendingArmies")
+		
+		// put the data in the tvArray
+		val territory = tvArray.get(row)
+		territory.attackingArmies = attackingArmies
+		territory.defendingArmies = defendingArmies
+		tvArray.updateRow(row)
+		
+		// try to carry the result through to the next row
+		// -> the fight from FightOdds concluded
+		// -> this isn't the last row
+		// -> the next row's attackers is blank
+		if (defendingArmies == 0 && tvArray.size() != row+1 && tvArray.get(row+1).attackingArmies == -1) {
+			tvArray.get(row+1).attackingArmies = attackingArmies - 1
+			tvArray.updateRow(row+1)
+		}
+		
+		// update the odds!
+		setupPathAnalysis()
 	}
 
 	fun hideKeyboard(view: View) {

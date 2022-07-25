@@ -33,6 +33,8 @@ class TerritoryViewArray() {
 	}
 	
 	fun updateRow(row: Int) {
+		// territory data is put into view data
+		
 		// get the rows from the arrays
 		val t = territoryArray.get(row)
 		Log.v(TAG, t.expectedRemaining.toString())
@@ -63,6 +65,7 @@ class TerritoryViewArray() {
 	}
 	
 	fun updateData() {
+		// view data is put into territory data
 		viewArray.forEachIndexed { index: Int, territoryView: View ->
 			//get the attackers
 			val atkEditText: EditText = territoryView.findViewById(R.id.atk2)
@@ -96,6 +99,10 @@ class TerritoryViewArray() {
 	
 	fun indexOf(view: View): Int {
 		return viewArray.indexOf(view)
+	}
+	
+	fun size(): Int {
+		return territoryArray.size
 	}
 	
 	override fun toString(): String {

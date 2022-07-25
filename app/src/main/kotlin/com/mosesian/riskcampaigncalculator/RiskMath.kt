@@ -185,11 +185,15 @@ fun pathAnalysis(territories: ArrayList<Territory>, useRisiko: Boolean) {
 	// do math
 	territories.forEachIndexed {index, territory -> 
 		// if garbage in, set default values
-		if (territory.defendingArmies <= 0) {
+		if (territory.defendingArmies < 0) {
 			territory.oddsOfWinning = -1.0
 			territory.expectedRemaining = -1.0
-			return
-		}			
+			return@forEachIndexed
+		} else if (territory.defendingArmies == 0) {
+			territory.oddsOfWinning = 1.0
+			territory.expectedRemaining = territory.attackingArmies.toDouble()
+			return@forEachIndexed
+		}
 		
 		//if this is an estimate, or the previous was an estimate
 		if (territory.attackingArmies >= 1000 || territory.defendingArmies >= 1000 || (index != 0 && territories[index-1].estimate)) {
