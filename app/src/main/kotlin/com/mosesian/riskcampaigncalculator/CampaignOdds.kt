@@ -19,6 +19,8 @@ class CampaignOdds : AppCompatActivity() {
 	var BLUE = 0
 	var DARK_GREY = 0
 	
+	var useRisiko = true
+	
 	// Territory View Array
 	lateinit var tvArray: TerritoryViewArray
 	lateinit var campaignList: LinearLayout
@@ -92,7 +94,7 @@ class CampaignOdds : AppCompatActivity() {
 		val territory_data = tvArray.territoryArray
 		
 		// do the math
-		pathAnalysis(territory_data)	// updates territory_data
+		pathAnalysis(territory_data, useRisiko)	// updates territory_data
 		
 		// update the views
 		tvArray.updateAll()

@@ -173,7 +173,7 @@ fun estimateRemaining(attackers: Int, defenders: Int, useRisiko: Boolean = false
 	return -2.0
 }
 
-fun pathAnalysis(territories: ArrayList<Territory>) {
+fun pathAnalysis(territories: ArrayList<Territory>, useRisiko: Boolean) {
 	Log.v(TAG, "path analysis")
 	// make sure there are actually armies to calculate
 	if (territories[0].attackingArmies == -1 || territories[0].defendingArmies == -1)
@@ -193,14 +193,14 @@ fun pathAnalysis(territories: ArrayList<Territory>) {
 		
 		//if this is an estimate, or the previous was an estimate
 		if (territory.attackingArmies >= 1000 || territory.defendingArmies >= 1000 || (index != 0 && territories[index-1].estimate)) {
-			estimateAnalysis(index, territory, territories)
+			estimateAnalysis(index, territory, territories, useRisiko)
 		} else {
-			victory = territoryAnalysis(index, territory, territories, victory)
+			victory = territoryAnalysis(index, territory, territories, victory, useRisiko)
 		}
 	}
 }
 
-fun estimateAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>) {
+fun estimateAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>, useRisiko: Boolean) {
 	// the idea here is that each row's attackers will be the previous row's remaining armies
 	// the defenders won't change
 	// the odds will be the estimated odds
@@ -214,8 +214,8 @@ fun estimateAnalysis(index: Int, territory: Territory, territories: ArrayList<Te
 		attackers = territories[index-1].expectedRemaining.toInt()
 	
 	//estimate odds
-	val odds = estimateProbability(attackers, defenders)
-	val expRemaining = estimateRemaining(attackers, defenders)
+	val odds = estimateProbability(attackers, defenders, useRisiko)
+	val expRemaining = estimateRemaining(attackers, defenders, useRisiko)
 	
 	territory.attackingArmies = attackers
 	territory.defendingArmies = defenders	//redundant but that's ok
@@ -224,14 +224,14 @@ fun estimateAnalysis(index: Int, territory: Territory, territories: ArrayList<Te
 	territory.estimate = true
 }
 
-fun territoryAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>, victory: Array<Double>): Array<Double> {
+fun territoryAnalysis(index: Int, territory: Territory, territories: ArrayList<Territory>, victory: Array<Double>, useRisiko: Boolean): Array<Double> {
 	
 	var _victory = victory
 	
 	// if the user set the number of armies
 	if (territory.attackingArmies != -1) {
 		// calculate victory from a single number of attackers
-		_victory = createVictoryArray(territory.attackingArmies, territory.defendingArmies)
+		_victory = createVictoryArray(territory.attackingArmies, territory.defendingArmies, useRisiko)
 	} else {
 		// if this is a continuation
 		// shift victory down
@@ -240,14 +240,12 @@ fun territoryAnalysis(index: Int, territory: Territory, territories: ArrayList<T
 		_victory[ victory.size-1 ] = 0.0
 		
 		// create a new victory array
-		val newVictory = Array(_victory.size-1, {0.0})
+		val newVictory = Array(_victory.size, {0.0})
 		
 		// for each possible number of attacking armies in victory...
 		_victory.forEachIndexed { index, probability -> 
-			if (probability <= 0) return newVictory
-			
 			// create a transitionOdds matrix
-			val transitionOdds = createVictoryArray(index, territory.defendingArmies)
+			val transitionOdds = createVictoryArray(index, territory.defendingArmies, useRisiko)
 			
 			// update the newVictory array
 			for (i in 0..(transitionOdds.size-1))
@@ -274,31 +272,87 @@ fun territoryAnalysis(index: Int, territory: Territory, territories: ArrayList<T
 	return _victory
 }
 
-fun createVictoryArray(attackers: Int, defenders: Int): Array<Double> {
+fun createVictoryArray(attackers: Int, defenders: Int, useRisiko: Boolean): Array<Double> {
 	
-	// transitionOdds has a 3 cell buffer to simplify calculations
-	val transitionOdds = Array(attackers+3, {
-		Array(defenders+3, {0.0})
+	// transitionOdds has a 4 cell buffer to simplify calculations
+	val transitionOdds = Array(attackers+4, {
+		Array(defenders+4, {0.0})
 	})
 	transitionOdds[attackers][defenders] = 1.0
-	for(i in attackers..0)
-		for(j in defenders..0)
-			transitionOdds[i][j] = findTransitionOdds(transitionOdds, i, j)
+	for(i in attackers downTo 0)
+		for(j in defenders downTo 0)  {
+			if (i == attackers && j == defenders)
+				continue
+			transitionOdds[i][j] = findTransitionOdds(transitionOdds, i, j, useRisiko)
+		}
 
 	// create the victory array...
+	Log.v(TAG, "=== victory ===")
 	val victory = Array(attackers+1, {0.0})
-	for(i in 0..(victory.size-1))
+	for(i in 0..(victory.size-1)) 
 		victory[i] = transitionOdds[i][0]
-	
+		
 	// ...and return it
 	return victory
 }
 
-fun findTransitionOdds(transitionOdds: Array<Array<Double>>, atk: Int, def: Int): Double {
-	return 0.33
+fun findTransitionOdds(odds: Array<Array<Double>>, a: Int, d: Int, useRisiko: Boolean): Double {
+	// this is the probability of going from eg 10v10 to eg 1v1
+	// where odds.size == 10, odds[x].size == 10
+	// and a == 1, d == 1
+	
+	if (useRisiko)
+		return findTransitionOddsRisiko(odds, a, d)
+	
+			// 3+ v 2+
+	return if (a >= 3 && d >= 2) p32a2 * odds[a+2][d] + p32ad * odds[a+1][d+1] + p32d2 * odds[a][d+2]
+		// can only get to 1v0 or 0v1 from 1v1
+		else if (a == 0 && d == 1) 	p11a * odds[1][1]
+		else if (a == 1 && d == 0) 	p11d * odds[1][1]
+		// can only get to 1v1 from 2v1, 2v2, 1v2, and only with specific loss conditions
+		else if (a == 1 && d == 1) 	p21a * odds[2][1] + p22ad * odds[2][2] + p12d * odds[1][2]
+		// can only get to 2v0 from 2v2 or 2v1
+		else if (a == 2 && d == 0) 	p22d2 * odds[2][2] + p21d * odds[2][1]
+		// can only get to 2v1 from 3v1, 3v2, or 2v3
+		else if (a == 2 && d == 1) 	p31a * odds[3][1] + p32ad * odds[3][2] + p22d2 * odds[2][3]
+		// can only get to 2vX from 2vX+2, 3vX+1, or 4vX
+		else if (a == 2) 			p22d2 * odds[2][d+2] + p32ad * odds[3][d+1] + p32a2 * odds[4][d]
+		// can only get to 0vX from 2vX, 1vX+1
+		else if (a == 0) 			p22a2 * odds[2][d] + p12a * odds[1][d]
+		// can only get to 1vX from 3vX, 2vX+1, or 1vX+1
+		else if (a == 1) 			p32a2 * odds[3][d] + p22ad * odds[2][d+1] + p12d * odds[1][d+1]
+		// can only get to Xv0 from Xv2 or Xv1 for X >= 3 (X<=2 has already been covered)
+		else if (d == 0)			p32d2 * odds[a][2] + p31d  * odds[a][1]
+		// can only get to Xv1 from x+1v1, X+1v2, or Xv3 for X >= 3 (X<=2 has already been covered)
+		else if (d == 1)			p31a  * odds[a+1][1] + p32ad * odds[a+1][2]   + p32d2 * odds[a][3]
+		// 0v0 -> impossible
+		else if (a == 0 && d == 0) 	0.0
+		//shouldn't happen
+		else -1.0
 }
 
-
+fun findTransitionOddsRisiko(odds: Array<Array<Double>>, a: Int, d: Int): Double {
+	
+		//fills the cell with corresponding data
+		//outside, fill from right to left, bottom to top
+	return if (a >= 3 && d >= 3)	 p33a3 * odds[a+3][d] + p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]
+		else if (a >= 3 && d == 2)	 p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]    + p32a2 * odds[a+2][d]
+		else if (a >= 3 && d == 1)	 p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]    + p32ad * odds[a+1][d+1]  + p31a * odds[a+1][d]
+		else if (a >= 3 && d == 0)	 p33d3 * odds[a][d+3]    + p32d2 * odds[a][d+2]    + p31d * odds[a][d+1]
+		else if (a == 2 && d >= 3)	 p33a3 * odds[a+3][d]    + p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p23d2 * odds[a][d+2]
+		else if (a == 2 && d == 2)	 p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p32a2 * odds[a+2][d]    + p23d2 * odds[a][d+2]
+		else if (a == 2 && d == 1)	 p33ad2 * odds[a+1][d+2] + p32ad * odds[a+1][d+1]  + p23d2 * odds[a][d+2]    + p31a * odds[a+1][d]
+		else if (a == 2 && d == 0)	 p22d2 * odds[a][d+2]    + p21d * odds[a][d+1]
+		else if (a == 1 && d >= 3)	 p33a3 * odds[a+3][d]    + p33a2d * odds[a+2][d+1] + p23ad * odds[a+1][d+1]  + p13d * odds[a][d+1]
+		else if (a == 1 && d == 2)	 p33a2d * odds[a+2][d+1]   + p32a2 * odds[a+2][d]    + p23ad * odds[a+1][d+1]  + p13d * odds[a][d+1]
+		else if (a == 1 && d == 1)	 p22ad * odds[a+1][d+1]  + p21a * odds[a+1][d]     + p12d * odds[a][d+1]
+		else if (a == 1 && d == 0)	 p11d * odds[a][d+1]
+		else if (a == 0 && d >= 3)	 p33a3 * odds[a+3][d]    + p23a2 * odds[a+2][d]    + p13a * odds[a+1][d]
+		else if (a == 0 && d == 2)	 p22a2 * odds[a+2][d]    + p12a * odds[a+1][d]
+		else if (a == 0 && d == 1)	 p11a * odds[a+1][d]
+		else if (a == 0 && d == 0)   0.0
+		else -1.0
+}
 
 
 
