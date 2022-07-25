@@ -2,6 +2,7 @@ package com.mosesian.riskcampaigncalculator
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -88,7 +89,7 @@ class CampaignOdds : AppCompatActivity() {
 	
 	fun setupPathAnalysis() {
 		// update the data with the data from the views
-		val result = tvArray.updateData()
+		tvArray.updateData()
 		
 		// extract the data
 		val territory_data = tvArray.territoryArray
@@ -98,13 +99,44 @@ class CampaignOdds : AppCompatActivity() {
 		
 		// update the views
 		tvArray.updateAll()
-		
 	}
 	
 	fun startFightOdds(view: View) {
 		Log.v(TAG, "start fight odds")
-		// do something
 		// this is the function defined on option2.java -> line 41
+		
+		// update the data with the data from the views
+		tvArray.updateData()
+		
+		//see if that view is inside of the view array
+		val row: Int = tvArray.indexOf(view)
+		if (row == -1)
+			return
+		
+		//get the data
+		val attackingArmies = tvArray.get(row).attackingArmies
+		val defendingArmies = tvArray.get(row).defendingArmies
+		
+		//validate the data
+		if (attackingArmies <= 0 || defendingArmies <= 0) {
+			Toast.makeText(applicationContext, getString(R.string.list_item_invalid), Toast.LENGTH_SHORT).show()
+			return
+		}
+		
+		//create the bundle of data to send
+		val intent = Intent(this, FightOdds::class.java)
+		intent.putExtra("attackingArmies", attackingArmies)
+		intent.putExtra("defendingArmies", defendingArmies)
+		intent.putExtra("row", row)
+		
+		//start the other activity for result
+		startActivityForResult(intent, REQUEST_CODE_FOR_CAMPAIGNODDS_AND_FIGHTODDS)
+		
+		
+	}
+	
+	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+		Log.v(TAG, "on activity result")
 	}
 
 	fun hideKeyboard(view: View) {
@@ -113,3 +145,26 @@ class CampaignOdds : AppCompatActivity() {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

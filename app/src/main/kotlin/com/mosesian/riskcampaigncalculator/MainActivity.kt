@@ -10,6 +10,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ListView
 
 var TAG = "RISK"
+var REQUEST_CODE_FOR_CAMPAIGNODDS_AND_FIGHTODDS = 1
 
 class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {

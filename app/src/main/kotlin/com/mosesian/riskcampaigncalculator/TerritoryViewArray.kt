@@ -90,6 +90,14 @@ class TerritoryViewArray() {
 		}
 	}
 	
+	fun get(row: Int): Territory {
+		return territoryArray[row]
+	}
+	
+	fun indexOf(view: View): Int {
+		return viewArray.indexOf(view)
+	}
+	
 	override fun toString(): String {
 		var str: String = ""
 		territoryArray.forEach {territory -> 

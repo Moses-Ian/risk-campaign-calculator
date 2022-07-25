@@ -287,7 +287,6 @@ fun createVictoryArray(attackers: Int, defenders: Int, useRisiko: Boolean): Arra
 		}
 
 	// create the victory array...
-	Log.v(TAG, "=== victory ===")
 	val victory = Array(attackers+1, {0.0})
 	for(i in 0..(victory.size-1)) 
 		victory[i] = transitionOdds[i][0]
@@ -332,9 +331,6 @@ fun findTransitionOdds(odds: Array<Array<Double>>, a: Int, d: Int, useRisiko: Bo
 }
 
 fun findTransitionOddsRisiko(odds: Array<Array<Double>>, a: Int, d: Int): Double {
-	
-		//fills the cell with corresponding data
-		//outside, fill from right to left, bottom to top
 	return if (a >= 3 && d >= 3)	 p33a3 * odds[a+3][d] + p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]
 		else if (a >= 3 && d == 2)	 p33a2d * odds[a+2][d+1] + p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]    + p32a2 * odds[a+2][d]
 		else if (a >= 3 && d == 1)	 p33ad2 * odds[a+1][d+2] + p33d3 * odds[a][d+3]    + p32ad * odds[a+1][d+1]  + p31a * odds[a+1][d]

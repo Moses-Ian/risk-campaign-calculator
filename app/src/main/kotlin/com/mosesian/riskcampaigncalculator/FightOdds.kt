@@ -1,6 +1,7 @@
 package com.mosesian.riskcampaigncalculator
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
@@ -31,6 +32,10 @@ class FightOdds : AppCompatActivity() {
 		MATCH_OVER, ONE_LOSS, TWO_LOSS, THREE_LOSS
 	}
 	var state: BattleState = BattleState.MATCH_OVER
+	
+	//for transition between here and CampaignOdds
+	var row = -1
+	var createdByCampaignOdds = false
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -79,6 +84,24 @@ class FightOdds : AppCompatActivity() {
 				// createOddsMatrix()
 			// }
 		// }
+		
+		// created by CampaignOdds
+		val intentExtras: Bundle? = getIntent().getExtras()
+		createdByCampaignOdds = intentExtras != null
+		if (createdByCampaignOdds) {
+			// get the elements
+			val atkEditText: EditText = findViewById(R.id.atk_entry_0)
+			// defEditText is already defined
+			
+			// set the data
+			row = intentExtras!!.getInt("row")
+			atkEditText.setText(intentExtras!!.getInt("attackingArmies").toString())
+			defEditText.setText(intentExtras!!.getInt("defendingArmies").toString())
+			
+			// automatically click
+			calcButton.performClick()
+		}
+		
 		
 		Log.v(TAG, "FightOdds")
 	}
@@ -176,7 +199,8 @@ class FightOdds : AppCompatActivity() {
 		}
 		
 		//if created by option2, do something
-		//something
+		if (createdByCampaignOdds)
+			bundleData()
 		
 		//update the page
 		updateLayout()
@@ -274,6 +298,16 @@ class FightOdds : AppCompatActivity() {
 	
 	fun isEstimate(): Boolean {
 		return currentAttackers >= 1000 || currentDefenders >= 1000
+	}
+	
+	fun bundleData() {
+		//current attackers and defenders has been updated by each of the button clicks
+		//the user could hit the back button at any time, so we need to update the bundle every time the data changes
+		val returnData = Intent()
+		returnData.putExtra("row", row)
+		returnData.putExtra("attackingArmies", currentAttackers)
+		returnData.putExtra("defendingArmies", currentDefenders)
+		setResult(Activity.RESULT_OK, returnData)
 	}
 
 /* 	override fun onSaveInstanceState(outState: Bundle) {

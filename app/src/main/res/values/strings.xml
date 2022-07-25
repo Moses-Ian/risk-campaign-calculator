@@ -48,6 +48,7 @@
 	<string name="attackers">Attackers</string>
 	<string name="defenders">Defenders</string>
 	<string name="clear">Clear</string>
+	<string name="list_item_invalid">Can only switch to dynamic fight odds if attackers and defenders are positive whole numbers.</string>
 	
 <!-- preferences -->
 	<string name="pref_risiko">Use RisiKo! rules</string>
